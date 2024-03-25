@@ -41,9 +41,9 @@ function trcTable = readTRC(file)
     markers = strrep(markers, [subjectID ':'], '');
     labels = markers(3:end);
     labels = labels(:);
-    out = array2table(data(:,2:end));
+    out = array2table(data(:,2:end-1));
     
-    colNames = compose('%s_%c', string(labels), 'xyz')';
+    colNames = compose('%s_%c', string(labels(1:end-1)), 'xyz')';
     
     varNames = [{'Header'}, colNames(:)'];
     
