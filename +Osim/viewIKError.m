@@ -13,7 +13,7 @@ function viewIKError(errorTable, surfacePlot)
     if ~surfacePlot
         data = errorTable{:, 2:end};
         % exclude nan values when calculating rms
-        rmsError = sqrt(nanmean(data.^2, 2)); %rms(data, 2);
+        rmsError = sqrt(mean(data.^2, 2, "omitnan")); %rms(data, 2);
         maxError = max(data, [], 2);
         hold on;
         plot(errorTable.Header, maxError);
