@@ -12,6 +12,9 @@ function errorTable = calculateMarkerErrors(trcTable, stoTable)
     stoTable = cut(stoTable, startTime, endTime);
     trcTable = trcTable(:, labels);
     stoTable = stoTable(:, labels);
+    % mm to m conversion.
+    mm_to_m = 1e-3;
+    stoTable(:,2:end) = stoTable(:,2:end) .* mm_to_m;
     % subtract the two tables
     fullErrors = stoTable{:, 2:end} - trcTable{:, 2:end};
     % calculate the Euclidian distance and convert mm to m

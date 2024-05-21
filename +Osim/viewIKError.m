@@ -23,7 +23,8 @@ function viewIKError(errorTable, surfacePlot)
         ylabel('Marker error (m)');
         title('Inverse Kinematics Marker Errors');
     else
-        e = errorTable(:, 2:end);
+        m_to_mm = 1000;
+        e = errorTable(:, 2:end) .* m_to_mm;
         surface(1:width(e), errorTable.Header, e.Variables, 'EdgeColor', 'none')
         set(gca, 'XTick', 1:width(e));
         labels = e.Properties.VariableNames';
