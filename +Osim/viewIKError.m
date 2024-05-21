@@ -10,8 +10,11 @@ function viewIKError(errorTable, surfacePlot)
     if ~exist('surfacePlot', 'var')
         surfacePlot = false;
     end
+
+    m_to_mm = 1000;
+
     if ~surfacePlot
-        data = errorTable{:, 2:end};
+        data = errorTable{:, 2:end} .* m_to_mm;
         % exclude nan values when calculating rms
         rmsError = sqrt(mean(data.^2, 2, "omitnan")); %rms(data, 2);
         maxError = max(data, [], 2);
@@ -20,10 +23,9 @@ function viewIKError(errorTable, surfacePlot)
         plot(errorTable.Header, rmsError);
         legend('Max', 'RMS');
         xlabel('Time (s)');
-        ylabel('Marker error (m)');
+        ylabel('Marker error (mm)');
         title('Inverse Kinematics Marker Errors');
     else
-        m_to_mm = 1000;
         e = errorTable(:, 2:end) .* m_to_mm;
         surface(1:width(e), errorTable.Header, e.Variables, 'EdgeColor', 'none')
         set(gca, 'XTick', 1:width(e));
@@ -39,7 +41,7 @@ function viewIKError(errorTable, surfacePlot)
         set(gca, 'XTickLabel', labels)
         xlabel('Marker');
         ylabel('Time (s)');
-        zlabel('Marker Error (m)');
+        zlabel('Marker Error (mm)');
         title('Inverse Kinematics Marker Errors');
         view(-20, 30);
     end
