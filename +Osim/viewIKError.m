@@ -1,4 +1,4 @@
-function viewIKError(errorTable, surfacePlot)
+function fig_err = viewIKError(errorTable, surfacePlot)
 % Osim.viewIKError(errorTable)
 % Osim.viewIKError(errorTable, surfacePlot)
 % viewIKError plots the error output of Osim.IK in a format that is more
@@ -7,24 +7,30 @@ function viewIKError(errorTable, surfacePlot)
 % the data (surfacePlot = true), or whether the data should be condensed
 % over the markers and plotted in 2D (surfacePlot = false, default).
 
+    font_size = 20;
+    line_width = 2;
+
     if ~exist('surfacePlot', 'var')
         surfacePlot = false;
     end
 
     m_to_mm = 1000;
 
+    fig_err = figure;
+
     if ~surfacePlot
         data = errorTable{:, 2:end} .* m_to_mm;
         % exclude nan values when calculating rms
         rmsError = sqrt(mean(data.^2, 2, "omitnan")); %rms(data, 2);
         maxError = max(data, [], 2);
-        hold on;
-        plot(errorTable.Header, maxError);
-        plot(errorTable.Header, rmsError);
+        hold on; box on; grid on;
+        plot(errorTable.Header, maxError, 'LineWidth', line_width, 'Color', 'r');
+        plot(errorTable.Header, rmsError, 'LineWidth', line_width, 'Color', 'b');
         legend('Max', 'RMS');
         xlabel('Time (s)');
         ylabel('Marker error (mm)');
-        title('Inverse Kinematics Marker Errors');
+        title('Inverse kinematics marker errors');
+        set(gca,'FontSize',font_size);
     else
         e = errorTable(:, 2:end) .* m_to_mm;
         surface(1:width(e), errorTable.Header, e.Variables, 'EdgeColor', 'none')
@@ -41,8 +47,11 @@ function viewIKError(errorTable, surfacePlot)
         set(gca, 'XTickLabel', labels)
         xlabel('Marker');
         ylabel('Time (s)');
-        zlabel('Marker Error (mm)');
-        title('Inverse Kinematics Marker Errors');
-        view(-20, 30);
+        zlabel('Marker error (mm)');
+        title('Inverse kinematics marker errors');
+        % view(-20, 30);
+        view(-3.0343,16.6257);
+        set(gca,'FontSize',font_size);
+        box on; grid on;
     end
 end
