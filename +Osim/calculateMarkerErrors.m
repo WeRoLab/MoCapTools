@@ -26,10 +26,15 @@ end
 
 function out=cut(atable,initial_time,final_time)
 %Extract a table by Header time interval
-idx=(atable.Header>=initial_time)&(atable.Header<=final_time);
+
+% Careful with floating point "if" condition comparisons!
+% Given the sample time of 1e-3, the maximum number of decimals used should 
+% be 3, e.g., 4.585000000000000.
+idx=(round(atable.Header,4) >= initial_time) & (round(atable.Header,4) <= final_time);
 data=atable;
 out=data(idx,:);
 if isempty(out)
     warning('Interval is empty');
 end
+
 end
