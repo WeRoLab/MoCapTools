@@ -15,6 +15,7 @@ function fig_err = viewIKError(errorTable, surfacePlot)
     end
 
     m_to_mm = 1000;
+    m_to_cm = 100;
 
     fig_err = figure;
 
@@ -24,15 +25,16 @@ function fig_err = viewIKError(errorTable, surfacePlot)
         rmsError = sqrt(mean(data.^2, 2, "omitnan")); %rms(data, 2);
         maxError = max(data, [], 2);
         hold on; box on; grid on;
-        plot(errorTable.Header, maxError, 'LineWidth', line_width, 'Color', 'r');
-        plot(errorTable.Header, rmsError, 'LineWidth', line_width, 'Color', 'b');
+        plot(errorTable.Header, maxError*m_to_cm, 'LineWidth', line_width, 'Color', 'r');
+        plot(errorTable.Header, rmsError*m_to_cm, 'LineWidth', line_width, 'Color', 'b');
         legend('Max', 'RMS');
         xlabel('Time (s)');
-        ylabel('Marker error (mm)');
+        ylabel('Marker error (cm)');
         title('Inverse kinematics marker errors');
         set(gca,'FontSize',font_size);
+        fig_err.Position = [2043         263        1092         848];
     else
-        e = errorTable(:, 2:end) .* m_to_mm;
+        e = errorTable(:, 2:end) .* m_to_mm .* m_to_cm;
         surface(1:width(e), errorTable.Header, e.Variables, 'EdgeColor', 'none')
         set(gca, 'XTick', 1:width(e));
         labels = e.Properties.VariableNames';
@@ -47,11 +49,13 @@ function fig_err = viewIKError(errorTable, surfacePlot)
         set(gca, 'XTickLabel', labels)
         xlabel('Marker');
         ylabel('Time (s)');
-        zlabel('Marker error (mm)');
+        zlabel('Marker error (cm)');
         title('Inverse kinematics marker errors');
         % view(-20, 30);
-        view(-3.0343,16.6257);
+        % view(-3.0343,16.6257);
+        view(0,0);
         set(gca,'FontSize',font_size);
         box on; grid on;
+        fig_err.Position = [294         241        1934         945];
     end
 end
